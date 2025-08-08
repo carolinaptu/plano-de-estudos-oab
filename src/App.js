@@ -1523,7 +1523,7 @@ function Pendencias({ userData, userId }) {
 
 
 // --- COMPONENTE DE TELA DE LOGIN ATUALIZADO ---
-function LoginScreen({ handleEmailLogin, handleAnonymousLogin, isLoggingIn, error }) {
+function LoginScreen({ handleEmailLogin, isLoggingIn, error }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -1583,20 +1583,6 @@ function LoginScreen({ handleEmailLogin, handleAnonymousLogin, isLoggingIn, erro
             {isLoggingIn ? <Loader2 className="animate-spin" /> : 'Entrar'}
           </button>
         </form>
-
-        <div className="flex items-center justify-center space-x-2">
-            <span className="h-px bg-gray-300 w-full"></span>
-            <span className="text-gray-500 text-sm">ou</span>
-            <span className="h-px bg-gray-300 w-full"></span>
-        </div>
-
-        <div>
-            <button onClick={handleAnonymousLogin} disabled={isLoggingIn} className="w-full py-3 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center justify-center">
-                <User className="mr-2" size={20}/>
-                Continuar sem login
-            </button>
-            <p className="text-xs text-gray-500 mt-2 text-center">Seu progresso não será salvo permanentemente.</p>
-        </div>
       </div>
     </div>
   );
@@ -1732,6 +1718,22 @@ export default function App() {
         };
     }, [userData.history]);
 
+    const overdueTasksCount = useMemo(() => {
+        if (!userData || !userData.tasks) {
+            return 0;
+        }
+        const todayNormalized = new Date(today);
+        todayNormalized.setHours(0, 0, 0, 0);
+
+        return userData.tasks.filter(task => {
+            if (task.completed || !task.dueDate) {
+                return false;
+            }
+            const taskDueDate = new Date(task.dueDate + 'T23:59:59');
+            return taskDueDate < todayNormalized;
+        }).length;
+    }, [userData.tasks, today]);
+
     const handleAuthAction = async (action) => {
         if (!auth) return;
         setIsLoggingIn(true);
@@ -1759,8 +1761,6 @@ export default function App() {
         }
     };
 
-    const handleAnonymousLogin = () => handleAuthAction(() => signInAnonymously(auth));
-
     const handleEmailLogin = (email, password) => handleAuthAction(() => {
         return signInWithEmailAndPassword(auth, email, password);
     });
@@ -1784,13 +1784,18 @@ export default function App() {
         }
     };
 
-    const TabButton = ({ id, label, icon }) => (
+    const TabButton = ({ id, label, icon, badgeCount = 0 }) => (
         <button
             onClick={() => setCurrentTab(id)}
-            className={"flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 " + (currentTab === id ? 'bg-blue-600 text-white shadow' : 'text-gray-600 hover:bg-blue-100 hover:text-blue-700')}
+            className={"relative flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 " + (currentTab === id ? 'bg-blue-600 text-white shadow' : 'text-gray-600 hover:bg-blue-100 hover:text-blue-700')}
         >
             {icon}
             <span className="ml-2 hidden sm:inline">{label}</span>
+            {badgeCount > 0 && (
+                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                    {badgeCount}
+                </span>
+            )}
         </button>
     );
 
@@ -1810,7 +1815,6 @@ export default function App() {
     if (!user) {
         return <LoginScreen 
             handleEmailLogin={handleEmailLogin}
-            handleAnonymousLogin={handleAnonymousLogin}
             isLoggingIn={isLoggingIn}
             error={loginError}
         />;
@@ -1828,7 +1832,7 @@ export default function App() {
                         <nav className="flex-grow flex justify-center gap-1 sm:gap-2">
                             <TabButton id="dashboard" label="Painel" icon={<Home size={16} />} />
                             <TabButton id="cronograma" label="Cronograma" icon={<Calendar size={16} />} />
-                            <TabButton id="pendencias" label="Pendências" icon={<CheckSquare size={16} />} />
+                            <TabButton id="pendencias" label="Pendências" icon={<CheckSquare size={16} />} badgeCount={overdueTasksCount} />
                             <TabButton id="trilha" label="Trilha" icon={<BrainCircuit size={16} />} />
                             <TabButton id="progresso" label="Progresso" icon={<TrendingUp size={16} />} />
                             <TabButton id="simulador" label="Simulador" icon={<FileText size={16} />} />
