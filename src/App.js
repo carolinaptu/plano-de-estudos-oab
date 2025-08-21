@@ -148,12 +148,12 @@ function Dashboard({ today, completedWeeksCount, simulations, userData, overallM
                 <div className="bg-white p-4 rounded-lg shadow-md space-y-4">
                      <StatCard icon={<Sparkles size={24} className="text-white"/>} label="Dias Consecutivos" value={`${userData.loginStreak || 0} dias`} subValue="de estudo" colorClass="bg-orange-500" />
                      <StatCard
-                        icon={<AlertTriangle size={24} className="text-white"/>}
-                        label="Pendências Atrasadas"
-                        value={overdueTasksCount}
-                        subValue={overdueTasksCount > 0 ? `Total de ${overdueTasksCount} tarefa(s)` : "Nenhuma tarefa em atraso"}
-                        colorClass={overdueTasksCount > 0 ? "bg-red-500" : "bg-green-500"}
-                    />
+                         icon={<AlertTriangle size={24} className="text-white"/>}
+                         label="Pendências Atrasadas"
+                         value={overdueTasksCount}
+                         subValue={overdueTasksCount > 0 ? `Total de ${overdueTasksCount} tarefa(s)` : "Nenhuma tarefa em atraso"}
+                         colorClass={overdueTasksCount > 0 ? "bg-red-500" : "bg-green-500"}
+                     />
                 </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -374,10 +374,10 @@ function Cronograma({ userData, updateUserData, today }) {
 }
 
 function MeuProgresso({ userData, updateUserData, userId }) { 
-    const [studyDate, setStudyDate] = useState(new Date().toISOString().split('T')[0]);
-    const [studyTopic, setStudyTopic] = useState('');
-    const [availableDisciplines, setAvailableDisciplines] = useState([]);
-    const [selectedDiscipline, setSelectedDiscipline] = useState('');
+    const [studyDate, setStudyDate] = useState(new Date().toISOString().split('T')[0]); 
+    const [studyTopic, setStudyTopic] = useState(''); 
+    const [availableDisciplines, setAvailableDisciplines] = useState([]); 
+    const [selectedDiscipline, setSelectedDiscipline] = useState(''); 
     const [questions, setQuestions] = useState(''); 
     const [correct, setCorrect] = useState(''); 
     const [error, setError] = useState(''); 
@@ -546,7 +546,7 @@ function MeuProgresso({ userData, updateUserData, userId }) {
                     <StatCard icon={<BarChart2 size={24} className="text-white"/>} label="Grupo C (Prioridade Baixa)" value={performanceStats.byGroup.C.total > 0 ? `${((performanceStats.byGroup.C.correct / performanceStats.byGroup.C.total) * 100).toFixed(1)}%` : 'N/A'} subValue={`${performanceStats.byGroup.C.correct} de ${performanceStats.byGroup.C.total}`} colorClass="bg-amber-600" /> 
                 </div>
             </div>
-             
+            
             <div className="bg-white p-6 rounded-lg shadow-md mt-8"> 
                 <h3 className="text-xl font-bold mb-4 text-gray-800 text-center">Histórico de Questões</h3> 
                 <div className="overflow-x-auto"> 
@@ -600,12 +600,14 @@ function TrilhaDiaria({userData, updateUserData, userId}) {
     const [historyTrails, setHistoryTrails] = useState([]); 
     const [loadingHistory, setLoadingHistory] = useState(true); 
 
+    // Chave da API do Google Gemini, agora com a chave correta
+    const GEMINI_API_KEY = "AIzaSyC4zeMkEEvYKXeqTq9_IJvkhc8Ua3gFU7k"; 
+
     const callGeminiAPI = async (prompt) => {
         try { 
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
             const payload = { contents: chatHistory }; 
-            const apiKey = "AIzaSyC4zeMkEEvYKXeqTq9_IJvkhc8Ua3gFU7k"; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`; 
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
             if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`); 
             const result = await response.json(); 
@@ -676,7 +678,7 @@ function TrilhaDiaria({userData, updateUserData, userId}) {
             }
 
             prompt = `Aja como um tutor experiente para o Exame da OAB. Crie um material de revisão consolidado e inteligente para a estudante Carolina. O objetivo é revisar os seguintes tópicos, que já foram estudados, para as disciplinas de ${disciplinesToReview.join(' e ')}:\n\n- ${pastTopics.join('\n- ')}\n\nEstruture a resposta EXATAMENTE da seguinte forma:\n\n### Resumo Consolidado\n[Faça um resumo que conecte os principais pontos dos tópicos listados, destacando os conceitos mais importantes e como eles se relacionam.]\n\n### Pontos de Atenção (Súmulas e Leis)\n[Liste os artigos de lei e súmulas mais relevantes e frequentemente cobrados na OAB relacionados a estes tópicos.]\n\n### Questões de Revisão Integrada\n[Crie ${numQuestoes} questões de múltipla escolha (A, B, C, D) no estilo da banca FGV/OAB que integrem os conceitos dos diferentes tópicos revisados.]\n\n### Gabarito Comentado\n[Apresente o gabarito das questões e, para cada uma, forneça um comentário explicando a resposta correta com base nos tópicos revisados.]`;
-        
+            
         } else if (!topic || topic.includes("Nenhum tópico") || topic.includes("Simulado")) { 
             setStudyContent(`<p class="text-center text-gray-500">O dia selecionado é para um simulado ou descanso. Selecione um dia com tópico de estudo ou revisão para gerar o material.</p>`); 
             setIsLoading(false); 
@@ -931,7 +933,7 @@ function SimuladorOAB({ userId, pastSimulations, loadingHistory }) {
                         loadingHistory={loadingHistory}
                         onReview={handleReviewPastSimulation}
                         onDelete={handleDeleteSimulation}
-                   />;
+                    />;
     }
 }
 
@@ -1001,12 +1003,12 @@ function SimulationHome({ onStart, isLoading, error, pastSimulations, loadingHis
                                                 <td className="py-3 px-6 text-center font-semibold">{percentage}%</td> 
                                                 <td className="py-3 px-6 text-center"> 
                                                     <div className="flex item-center justify-center gap-2">
-                                                        <button onClick={() => onReview(sim)} className="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200" title="Revisar Simulado">
-                                                           <RotateCcw size={16}/>
-                                                        </button>
-                                                        <button onClick={() => onDelete(sim.id)} className="w-8 h-8 flex items-center justify-center bg-red-100 text-red-600 rounded-full hover:bg-red-200" title="Apagar Simulado">
-                                                            <Trash2 size={16}/>
-                                                        </button>
+                                                         <button onClick={() => onReview(sim)} className="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200" title="Revisar Simulado">
+                                                             <RotateCcw size={16}/>
+                                                         </button>
+                                                         <button onClick={() => onDelete(sim.id)} className="w-8 h-8 flex items-center justify-center bg-red-100 text-red-600 rounded-full hover:bg-red-200" title="Apagar Simulado">
+                                                             <Trash2 size={16}/>
+                                                         </button>
                                                     </div>
                                                 </td> 
                                             </tr> 
@@ -1132,7 +1134,7 @@ function ResultsView({ simulationData, onReview, onGoHome }) {
         try {
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
             const payload = { contents: chatHistory }; 
-            const apiKey = ""; 
+            const apiKey = "AIzaSyC4zeMkEEvYKXeqTq9_IJvkhc8Ua3gFU7k"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`; 
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
             if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`); 
@@ -1251,7 +1253,7 @@ function ReviewView({ simulationData, onGoHome, onBackToResults }) {
         try { 
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
             const payload = { contents: chatHistory }; 
-            const apiKey = ""; 
+            const apiKey = "AIzaSyC4zeMkEEvYKXeqTq9_IJvkhc8Ua3gFU7k"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`; 
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
             if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`); 
@@ -1493,27 +1495,27 @@ function Pendencias({ userData, userId }) {
                 <div>
                     <h3 className="text-xl font-bold text-gray-800 mb-4">Tarefas Concluídas ({completedTasks.length})</h3>
                     {completedTasks.length > 0 && (
-                         <ul className="space-y-3">
-                            {completedTasks.map(task => (
-                                <li key={task.id} className="bg-gray-50 p-4 rounded-lg flex items-center justify-between gap-4 opacity-70">
-                                    <div className="flex items-center gap-4 flex-grow">
-                                        <input
-                                            type="checkbox"
-                                            checked={task.completed}
-                                            onChange={() => handleToggleTask(task.id)}
-                                            className="h-6 w-6 rounded-full border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer flex-shrink-0"
-                                        />
-                                        <div className="flex-grow">
-                                            <p className="text-gray-500 line-through">{task.description}</p>
-                                            <p className="text-xs text-gray-400 mt-1">Concluída</p>
+                            <ul className="space-y-3">
+                                {completedTasks.map(task => (
+                                    <li key={task.id} className="bg-gray-50 p-4 rounded-lg flex items-center justify-between gap-4 opacity-70">
+                                        <div className="flex items-center gap-4 flex-grow">
+                                            <input
+                                                type="checkbox"
+                                                checked={task.completed}
+                                                onChange={() => handleToggleTask(task.id)}
+                                                className="h-6 w-6 rounded-full border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer flex-shrink-0"
+                                            />
+                                            <div className="flex-grow">
+                                                <p className="text-gray-500 line-through">{task.description}</p>
+                                                <p className="text-xs text-gray-400 mt-1">Concluída</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <button onClick={() => handleDeleteTask(task.id)} className="p-2 rounded-full text-gray-400 hover:bg-red-100 hover:text-red-600">
-                                        <Trash2 size={18} />
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                                        <button onClick={() => handleDeleteTask(task.id)} className="p-2 rounded-full text-gray-400 hover:bg-red-100 hover:text-red-600">
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
                     )}
                 </div>
             </div>
@@ -1524,68 +1526,68 @@ function Pendencias({ userData, userId }) {
 
 // --- COMPONENTE DE TELA DE LOGIN ATUALIZADO ---
 function LoginScreen({ handleEmailLogin, isLoggingIn, error }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-  const onEmailSubmit = (e) => {
-    e.preventDefault();
-    handleEmailLogin(email, password);
-  };
+    const onEmailSubmit = (e) => {
+        e.preventDefault();
+        handleEmailLogin(email, password);
+    };
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-xl">
-        <div className="text-center">
-            <div className="flex justify-center items-center gap-3 mb-4">
-                <div className="bg-red-600 text-white font-bold rounded-md p-3">OAB</div>
-                <h1 className="text-3xl font-bold text-gray-800">Carolina Natal</h1>
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-xl">
+                <div className="text-center">
+                    <div className="flex justify-center items-center gap-3 mb-4">
+                        <div className="bg-red-600 text-white font-bold rounded-md p-2">OAB</div>
+                        <h1 className="text-3xl font-bold text-gray-800">Carolina Natal</h1>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-700">Bem-vinda ao seu Plano de Estudos para a OAB!</h2>
+                    <p className="text-gray-600 mt-2">Faça login para salvar seu progresso.</p>
+                </div>
+                
+                <form onSubmit={onEmailSubmit} className="space-y-4">
+                    <div>
+                        <label className="text-sm font-bold text-gray-600 block">E-mail</label>
+                        <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                            <input 
+                                type="email" 
+                                value={email} 
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full pl-10 pr-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
+                                placeholder="seu.email@exemplo.com"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="text-sm font-bold text-gray-600 block">Senha (mínimo 6 caracteres)</label>
+                        <div className="relative">
+                               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                               <input 
+                                type="password" 
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full pl-10 pr-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
+                                placeholder="••••••••"
+                                required
+                                minLength="6"
+                            />
+                        </div>
+                    </div>
+                    {error && (
+                        <p className='text-sm text-center text-red-500'>
+                            {error}
+                        </p>
+                    )}
+                    <button type="submit" disabled={isLoggingIn} className="w-full py-3 mt-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 flex items-center justify-center">
+                        {isLoggingIn ? <Loader2 className="animate-spin" /> : 'Entrar'}
+                    </button>
+                </form>
             </div>
-            <h2 className="text-2xl font-bold text-gray-700">Bem-vinda ao seu Plano de Estudos para a OAB!</h2>
-            <p className="text-gray-600 mt-2">Faça login para salvar seu progresso.</p>
         </div>
-        
-        <form onSubmit={onEmailSubmit} className="space-y-4">
-          <div>
-            <label className="text-sm font-bold text-gray-600 block">E-mail</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input 
-                type="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
-                placeholder="seu.email@exemplo.com"
-                required
-              />
-            </div>
-          </div>
-          <div>
-            <label className="text-sm font-bold text-gray-600 block">Senha (mínimo 6 caracteres)</label>
-            <div className="relative">
-               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-               <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
-                placeholder="••••••••"
-                required
-                minLength="6"
-              />
-            </div>
-          </div>
-          {error && (
-            <p className='text-sm text-center text-red-500'>
-                {error}
-            </p>
-          )}
-          <button type="submit" disabled={isLoggingIn} className="w-full py-3 mt-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 flex items-center justify-center">
-            {isLoggingIn ? <Loader2 className="animate-spin" /> : 'Entrar'}
-          </button>
-        </form>
-      </div>
-    </div>
-  );
+    );
 }
 
 // --- COMPONENTE DE TELA DE ERRO ---
