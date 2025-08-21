@@ -10,7 +10,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, Title, DoughnutController, BarCont
 
 // --- INÍCIO: Configuração do Firebase ---
 const firebaseConfig = {
-    apiKey: "AIzaSyC4zeMkEEvYKXeqTq9_IJvkhc8Ua3gFU7k",
+    apiKey: "AIzaSyBH3gRvgFYPs6OQDwiXdH78DwqtXwZiZ5A",
     authDomain: "plano-oab-carol.firebaseapp.com",
     projectId: "plano-oab-carol",
     storageBucket: "plano-oab-carol.firebasestorage.app",
@@ -604,7 +604,7 @@ function TrilhaDiaria({userData, updateUserData, userId}) {
         try { 
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
             const payload = { contents: chatHistory }; 
-            const apiKey = ""; 
+            const apiKey = "AIzaSyAoQYUfflrgPAr8gg-g6pIW0_lAnJxHThU"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`; 
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
             if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`); 
