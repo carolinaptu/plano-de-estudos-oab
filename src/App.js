@@ -10,7 +10,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, Title, DoughnutController, BarCont
 
 // --- INÍCIO: Configuração do Firebase ---
 const firebaseConfig = {
-    apiKey: "AIzaSyCVX4BgMi8dvYhoetBl6oURUfSeebtrgC0",
+    apiKey: "AIzaSyC4zeMkEEvYKXeqTq9_IJvkhc8Ua3gFU7k",
     authDomain: "plano-oab-carol.firebaseapp.com",
     projectId: "plano-oab-carol",
     storageBucket: "plano-oab-carol.firebasestorage.app",
