@@ -604,7 +604,7 @@ function TrilhaDiaria({userData, updateUserData, userId}) {
         try { 
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
             const payload = { contents: chatHistory }; 
-            const apiKey = ""; 
+            const apiKey = "AIzaSyC4zeMkEEvYKXeqTq9_IJvkhc8Ua3gFU7k"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`; 
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
             if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`); 
