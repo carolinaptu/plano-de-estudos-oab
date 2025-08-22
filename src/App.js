@@ -1134,8 +1134,7 @@ function ResultsView({ simulationData, onReview, onGoHome }) {
         try {
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
             const payload = { contents: chatHistory }; 
-            const apiKey = ""; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`; 
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
             if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`); 
             const result = await response.json(); 
@@ -1253,8 +1252,7 @@ function ReviewView({ simulationData, onGoHome, onBackToResults }) {
         try { 
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
             const payload = { contents: chatHistory }; 
-            const apiKey = ""; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`; 
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
             if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`); 
             const result = await response.json(); 
